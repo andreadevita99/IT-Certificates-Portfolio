@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>IT Certificates Portfolio | Andrea De Vita</title>
+    <!-- Favicon from GitHub repo via jsDelivr -->
+    <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/andreadevita99/IT-Certificates-Portfolio@df48e2ed2545a9baecd42780c3e418f685e4b2ef/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        :root {
+            --bg-page: #f4f7fc;
+            --surface-card: #ffffff;
+            --text-primary: #1e2a3e;
+            --text-secondary: #2c3e50;
+            --desc-color: #4a627a;
+            --shadow-sm: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
+            --border-light: rgba(0, 0, 0, 0.05);
+            --header-border: rgba(0,0,0,0.05);
+        }
+
+        body.dark {
+            --bg-page: #0f172a;
+            --surface-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --desc-color: #94a3b8;
+            --shadow-sm: 0 15px 25px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 25px 40px rgba(0, 0, 0, 0.4);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --header-border: #334155;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--header-border);
+        }
+
+        .title-section h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(125deg, #2c7da0, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        /* iOS toggle */
+        .theme-switch {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-ios {
+            position: relative;
+            display: inline-block;
+            width: 64px;
+            height: 32px;
+        }
+
+        .toggle-ios input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s;
+            border-radius: 34px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "☀️";
+            height: 26px;
+            width: 26px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: #f59e0b;
+        }
+
+        input:checked + .slider:before {
+            content: "🌙";
+            transform: translateX(32px);
+            background-color: #1e293b;
+        }
+
+        /* Gallery grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            justify-items: center;
+            align-items: stretch;
+            margin-top: 1rem;
+        }
+
+        /* Card semplice (nessun flip) */
+        .card {
+            width: 100%;
+            max-width: 320px;
+            background: var(--surface-card);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--border-light);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-title {
+            padding: 1rem;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            background: var(--surface-card);
+        }
+
+        /* Modal per lo zoom dell'immagine */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 20px;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            background: transparent;
+            animation: zoomIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .modal-content img {
+            width: auto;
+            max-width: 100%;
+            max-height: 85vh;
+            display: block;
+            border-radius: 16px;
+            object-fit: contain;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .container {
+                padding: 1.2rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .gallery {
+                gap: 1.5rem;
+            }
+            .card-title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title-section">
+                <h1>📜 IT Certificates Portfolio | Andrea De Vita</h1>
+            </div>
+            <div class="theme-switch">
+                <label class="toggle-ios">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="gallery" id="certGallery"></div>
+    </div>
+
+    <!-- Modal per l'ingrandimento -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Certificato ingrandito">
+        </div>
+    </div>
+
+    <script>
+        // URL delle immagini dalla repository GitHub, in ordine da 1 a 13
+        const imageUrls = [
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/1%20-%20Apple%20Education%20-%20Apple%20Teacher%20Program-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/2%20-%20Corso%20Python%20-%20Codeaccess-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/3%20-%20Corso%20Cybersecurity%20e%20Ethical%20Hacking%20-%20Codeaccess-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/4%20-%20Junior%20System%20%20Cybersecurity%20Analyst%20-%20Generation%20italy-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/5%20-%20Introduction%20to%20Cybersecurity%20-%20Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/6-Ethical-Hacker-Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/7-Python-Essentials1-Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/8-Introduction-to-IoT-Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/9%20-%20English%20for%20IT%201%20-%20Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/10%20-%20Computer%20Hardware%20Basics%20-%20Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/11-Operating-Systems-Basics-Cisco-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/12%20-%20Talentform%20SPA%20-%20Corso%20Sistemista%20Informatico%20-%20Archimede-1.jpg",
+            "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/13%20-%20Certificato%20lingua%20Inglese-1.jpg"
+        ];
+
+        // Nomi aggiornati dei certificati (solo per visualizzazione sotto l'immagine)
+        const certificateNames = [
+            "Apple Teacher Program - Apple Education",
+            "Corso Python - Codeaccess",
+            "Cybersecurity & Ethical Hacking - Codeaccess",
+            "Junior System & Cybersecurity Analyst - Generation Italy",
+            "Introduction to Cybersecurity - Cisco",
+            "Ethical Hacker - Cisco",
+            "Python Essentials 1 - Cisco",
+            "Introduction to IoT - Cisco",
+            "English for IT 1 - Cisco",
+            "Computer Hardware Basics - Cisco",
+            "Operating Systems Basics - Cisco",
+            "Sistemista Hardware Informatico - Talentform",
+            "English Language Certificate - Twin Group English Centre"
+        ];
+
+        const galleryContainer = document.getElementById('certGallery');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        let closeTimer = null;
+
+        // Dark mode
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+                darkModeToggle.checked = true;
+            } else {
+                document.body.classList.remove('dark');
+                darkModeToggle.checked = false;
+            }
+        }
+
+        function toggleTheme() {
+            if (darkModeToggle.checked) {
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        darkModeToggle.addEventListener('change', toggleTheme);
+        initTheme();
+
+        // Funzioni per aprire/chiudere il modal con zoom
+        function openModal(imgSrc) {
+            if (closeTimer) clearTimeout(closeTimer);
+            modalImage.src = imgSrc;
+            modal.classList.add('show');
+            // Imposta il timer per la chiusura automatica dopo 5 secondi
+            closeTimer = setTimeout(() => {
+                closeModal();
+            }, 5000);
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+            }
+            // Piccola pulizia dopo la transizione
+            setTimeout(() => {
+                if (!modal.classList.contains('show')) {
+                    modalImage.src = "";
+                }
+            }, 300);
+        }
+
+        // Chiudi anche se clicchi sullo sfondo del modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Costruzione galleria (senza flip e senza descrizioni)
+        function buildGallery() {
+            galleryContainer.innerHTML = '';
+            for (let i = 0; i < imageUrls.length; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const img = document.createElement('img');
+                img.src = imageUrls[i];
+                img.alt = certificateNames[i];
+                img.className = 'card-image';
+                img.loading = 'lazy';
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'card-title';
+                titleDiv.textContent = certificateNames[i];
+                
+                card.appendChild(img);
+                card.appendChild(titleDiv);
+                
+                // Al click, zoom centrale con modal
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(imageUrls[i]);
+                });
+                
+                galleryContainer.appendChild(card);
+            }
+        }
+
+        buildGallery();
+    </script>
+</body>
+</html>
