@@ -143,7 +143,7 @@
             margin-top: 1rem;
         }
 
-        /* Card semplice (nessun flip) */
+        /* Card */
         .card {
             width: 100%;
             max-width: 320px;
@@ -177,7 +177,7 @@
             background: var(--surface-card);
         }
 
-        /* Modal per lo zoom dell'immagine */
+        /* Modal for image zoom */
         .modal {
             display: none;
             position: fixed;
@@ -264,7 +264,7 @@
         <div class="gallery" id="certGallery"></div>
     </div>
 
-    <!-- Modal per l'ingrandimento -->
+    <!-- Modal for zoom -->
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <img id="modalImage" src="" alt="Certificato ingrandito">
@@ -272,7 +272,7 @@
     </div>
 
     <script>
-        // URL delle immagini dalla repository GitHub, in ordine da 1 a 13
+        // URLs of the images from the GitHub repository, in order from 1 to 13
         const imageUrls = [
             "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/1%20-%20Apple%20Education%20-%20Apple%20Teacher%20Program-1.jpg",
             "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/2%20-%20Corso%20Python%20-%20Codeaccess-1.jpg",
@@ -289,7 +289,7 @@
             "https://raw.githubusercontent.com/andreadevita99/IT-Certificates-Portfolio/main/13%20-%20Certificato%20lingua%20Inglese-1.jpg"
         ];
 
-        // Nomi aggiornati dei certificati (solo per visualizzazione sotto l'immagine)
+        // Updated certificate names (for display below the image only)
         const certificateNames = [
             "Apple Teacher Program - Apple Education",
             "Corso Python - Codeaccess",
@@ -337,12 +337,12 @@
         darkModeToggle.addEventListener('change', toggleTheme);
         initTheme();
 
-        // Funzioni per aprire/chiudere il modal con zoom
+        // Functions to open/close the modal with zoom
         function openModal(imgSrc) {
             if (closeTimer) clearTimeout(closeTimer);
             modalImage.src = imgSrc;
             modal.classList.add('show');
-            // Imposta il timer per la chiusura automatica dopo 5 secondi
+            // Set the timer to close automatically after 5 seconds
             closeTimer = setTimeout(() => {
                 closeModal();
             }, 5000);
@@ -354,7 +354,7 @@
                 clearTimeout(closeTimer);
                 closeTimer = null;
             }
-            // Piccola pulizia dopo la transizione
+            // A quick cleanup after the transition
             setTimeout(() => {
                 if (!modal.classList.contains('show')) {
                     modalImage.src = "";
@@ -362,14 +362,14 @@
             }, 300);
         }
 
-        // Chiudi anche se clicchi sullo sfondo del modal
+        // Close even if there's a click on the modal's background
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeModal();
             }
         });
 
-        // Costruzione galleria (senza flip e senza descrizioni)
+        // Gallery construction (no flips and no descriptions)
         function buildGallery() {
             galleryContainer.innerHTML = '';
             for (let i = 0; i < imageUrls.length; i++) {
@@ -389,7 +389,7 @@
                 card.appendChild(img);
                 card.appendChild(titleDiv);
                 
-                // Al click, zoom centrale con modal
+                // On click, center zoom with modal
                 card.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openModal(imageUrls[i]);
